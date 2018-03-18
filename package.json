@@ -1,0 +1,21 @@
+{
+  "name": "project01",
+  "version": "1.0.0",
+  "description": "Get the arduino axis data and other data to display a 3d object",
+  "main": "app.js",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "serialport": "^6.1.1",
+    "socket.io": "^2.0.4",
+    "socket.io-serialport": "^2.0.1",
+    "three": "^0.90.0",
+    "three-obj-loader": "^1.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ghoshanjega",
+  "license": "ISC"
+}

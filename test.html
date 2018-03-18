@@ -1,0 +1,7 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io('http://localhost/5000');
+  socket.on('serial_update', function (data) {
+    console.log(data);
+  });
+</script>
