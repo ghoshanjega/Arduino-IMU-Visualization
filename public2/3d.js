@@ -1,5 +1,6 @@
 
 
+//var socket = io('ws://10.89.64.14:8888', {transports: ['websocket']},);
 var socket = io('ws://localhost:8888', {transports: ['websocket']});
 console.log('check 1', socket.connected);
 socket.on('connect', function() {
@@ -239,31 +240,6 @@ dash.position.z = 15;
 
     }
 
-    scene.add( new THREE.AxesHelper( 20 ) );
-
-    var objloader = new THREE.OBJLoader();
-    objloader.load('obj/mig29.obj', function(object) {
-    
-        // if you want to add your custom material
-        var materialObj = new THREE.MeshBasicMaterial({
-            vertexColors: THREE.FaceColors,
-            overdraw: 0.5
-        });
-        object.traverse(function(child) {
-            if (child instanceof THREE.Mesh) {
-                child.material = materialObj;
-            }
-        });
-    
-        // then directly add the object
-        //scene.add(object);
-        object.position.z = -100;
-        object.position.x = -10;
-
-    });
-
-
-
     
    
 
@@ -271,14 +247,14 @@ function animate() {
     requestAnimationFrame( animate );
     if(mesh){ 
         mesh.rotation.y = dataRollx;
-        mesh.rotation.z = -dataRollz;
-        mesh.rotation.x = -dataRolly;
+        mesh.rotation.z = dataRollz;
+        mesh.rotation.x = dataRolly;
         //mesh.quaternion.slerp(quat.normalize,1);
         //console.log(quat._x);
         // var euler = new THREE.Vector3(Quat2Angle(quat._x,quat._y,quat._z,quat._z));
         //  console.log(euler.x);
-        //var rotation = new THREE.Euler().setFromQuaternion( quat );
-        //mesh.rotation.x = euler.x;
+        // var rotation = new THREE.Euler().setFromQuaternion( quat );
+        // mesh.rotation.x = euler.x;
         //mesh.quaternion.x = quat._x;
         //mesh.matrix.compose()
     }
@@ -290,7 +266,7 @@ function animate() {
     //altitude indicator
     if(cb){
         cb.position.y = -dataRolly*2;
-        cb.rotation.z = -dataRollz;
+        cb.rotation.z = dataRollz;
     }
     else{
         console.log("cb not found");

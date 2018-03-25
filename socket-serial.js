@@ -5,7 +5,7 @@ var express = require('express'),
     port = 8888;
 
 //Server start
-server.listen(port, () => console.log('on port' + port))
+server.listen(port, '0.0.0.0', () => console.log('on port' + port))
 
 //user server
 var path = require('path');
