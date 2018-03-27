@@ -273,9 +273,7 @@ function animate() {
     }
     
     
-     //loader.rotation.x = 0.01;
-    // jet.rotation.y = -dataRollz;
-    // jet.rotation.z = -dataRolly;
+     
 	renderer.render( scene, camera );
 }
 animate();

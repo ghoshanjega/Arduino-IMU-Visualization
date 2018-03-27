@@ -10,10 +10,9 @@ server.listen(port, '0.0.0.0', () => console.log('on port' + port))
 //user server
 var path = require('path');
 
-//express.static(root, [options])
-//app.use(express.static('public'))
+
 app.use(express.static(path.join(__dirname, 'public2')));
-//app.use(express.static(__dirname + '/public'));
+
 app.get('/', function(req, res){
     res.sendFile('index2.html', { root: __dirname  } );
 });
