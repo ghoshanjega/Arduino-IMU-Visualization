@@ -1,77 +1,45 @@
-var app = require('http').createServer(handler);
-var io = require('socket.io')(app);
-var url= require('url');
-var fs = require('fs');
-var os = require('os');
-var io = require('socket.io').listen(app);
-const SerialPort = require('serialport');
-const Readline = SerialPort.parsers.Readline;
-const serialport = new SerialPort('COM6',9600);
-const parser = serialport.pipe(new Readline({ delimiter: '\r\n' }));
+var express = require('express'),
+    app = express(),
+    server = require('http').Server(app),
+    io = require('socket.io')(server),
+    port = 8888;
+
+//Server start
+server.listen(port, '0.0.0.0', () => console.log('on port' + port))
+
+//user server
+var path = require('path');
 
 
+app.use(express.static(path.join(__dirname, 'public2')));
 
-app.listen(5000);
+app.get('/', function(req, res){
+    res.sendFile('homepage.html', { root: __dirname  } );
+});
 
-/* SERIAL WORK */
-serialport.open(function (error) {
- 
-    console.log('open');
-    parser.on('data', function(data) {
-       console.log('data received: ' + data);
-      io.sockets.emit('IMU_data', data);
-    });
-    //serialPort.write("ls\n", function(err, results) {
-    //  console.log('err ' + err);
-    //  console.log('results ' + results);
-    //});
-  
+app.get('/bonus', function(req, res){
+    res.sendFile('bunuspage.html', { root: __dirname  } );
 });
 
 
-// Http handler function
+io.on('connection', onConnection);
 
-function handler (req, res) {
-    
-  // Using URL to parse the requested URL
-  var path = url.parse(req.url).pathname;
-  
-  // Managing the root route
-  if (path == '/') {
-      index = fs.readFile(__dirname+'/three.html', 
-          function(error,data) {
-              
-              if (error) {
-                  res.writeHead(500);
-                  return res.end("Error: unable to load three.html");
-              }
-              
-              res.writeHead(200,{'Content-Type': 'text/html'});
-              res.end(data);
-          });
-
-  // Managing the route for the javascript files
-  } else if( /\.(js)$/.test(path) ) {
-      index = fs.readFile(__dirname+path, 
-          function(error,data) {
-              
-              if (error) {
-                  res.writeHead(500);
-                  return res.end("Error: unable to load " + path);
-              }
-              
-              res.writeHead(200,{'Content-Type': 'text/plain'});
-              res.end(data);
-          });
-  } else {
-      res.writeHead(404);
-      res.end("Error: 404 - File not found.");
-  }
+var connectedSocket = null;
+function onConnection(socket){
+    connectedSocket = socket;
 }
-  
-  // io.on('connection', function (socket) {
-  //   socket.emit('news', { hello: 'world' });
-  //   socket.on('my other event', function (data) {
-  //     console.log(data);
-  //   });
-  // });
+
+//Arduino to CMD
+const SerialPort = require('serialport');
+const Readline = SerialPort.parsers.Readline; 
+const usbport = new SerialPort('COM6');  
+const parser = usbport.pipe(new Readline()); 
+parser.on('data', function (data) {
+    var dataArray = data.split(' ');
+    for(var i = 0; i< dataArray.length; i++){
+        dataArray[i] = parseFloat(dataArray[i]);
+        //console.log(dataArray[i]);
+        console.log(data);
+    }
+    io.emit('data', { data: data, dataArray: dataArray });
+});
