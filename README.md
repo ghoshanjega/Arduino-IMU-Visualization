@@ -9,6 +9,6 @@ Arduino gyroscop visualization using Threejs.
 3. Go to "localhost:8888" on the browser
 
 **The project can be viewed at**
-[title](https://www.youtube.com/watch?v=Bll1jZfpnbo)	
+[youtube](https://www.youtube.com/watch?v=Bll1jZfpnbo)	
 
 ![alt](https://i.imgur.com/6721jOd.png)	
